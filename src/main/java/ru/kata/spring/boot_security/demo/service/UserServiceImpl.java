@@ -55,7 +55,7 @@ public class UserServiceImpl  implements UserService{
         return roles.stream().map(r-> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
     }
 
-    @Transactional
+
     @Override
     public void saveUser(User user) {
         Collection<Role> roles = new ArrayList<>();
@@ -64,7 +64,7 @@ public class UserServiceImpl  implements UserService{
         userRepository.save(user);
     }
 
-    @Transactional
+
     @Override
     public void updateUser(User user) {
         Collection<Role> roles = new ArrayList<>();
@@ -72,7 +72,7 @@ public class UserServiceImpl  implements UserService{
         user.setRoles(roles);
         userRepository.save(user);
     }
-    @Transactional
+
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
