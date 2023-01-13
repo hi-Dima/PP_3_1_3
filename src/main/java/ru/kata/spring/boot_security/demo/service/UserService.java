@@ -12,10 +12,12 @@ public interface UserService {
 //    void saveUser(User user);
     List<User> getAllUsers();
     User userInfo(int id);
+    User findUserByUsername (String username);
     Collection<? extends GrantedAuthority> getUserAuthorities(String user);
+    void saveUser(User user);
 
+    void updateUser(User user);
 
-//    void updateUser(User user);
-//
-//    void deleteUser(int id);
+    void deleteUser(int id);
+
 }

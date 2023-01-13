@@ -18,7 +18,7 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRoles().toString()));
     }
 
     @Override

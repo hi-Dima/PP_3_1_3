@@ -1,12 +1,33 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>Edit User</title>
 </head>
 <body>
-<h1>edit page!</h1>
 
+<form th:method="POST" th:action="@{/users/edit(id=${user.getId()})}" th:object="${user}">
+
+    <label for="name"> Edit Name: </label>
+    <input type="text" th:field="*{username}" id="name"/>
+
+    <br><br/>
+
+    <label for="email"> Edit email: </label>
+    <input type="text" th:field="*{email}" id="email">
+
+    <br><br/>
+
+
+    <label for="pass"> Edit pass: </label>
+    <input type="text" th:field="*{pass}" id="pass">
+
+    <br><br/>
+
+    <input type="submit" value="Edit">
+</form>
 <br><br/>
-<hr/>
+<a href="/logout">logout</a>
 </body>
 </html>
