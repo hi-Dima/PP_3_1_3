@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,17 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String getViewForCreateUsers(@ModelAttribute("user") User user) {
+    public String getViewForCreateUsers(Model model, Principal principal) {
+        model.addAttribute("roles", userService.getUserRoles());
+        User user = userService.findUserByUsername(principal.getName());
+        model.addAttribute("user", user);
 
         return "new";
     }
 
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user) {
+
         userService.saveUser(user);
 
         return "redirect:/admin";

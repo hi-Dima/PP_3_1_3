@@ -2,29 +2,34 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.repositories.UserRepository;
+import ru.kata.spring.boot_security.demo.dao.UserRepository;
+
+import javax.persistence.EntityManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-// Класс сервиса. Внедряем зависимость от UserDao c помощью конструктора. Аннотации @Transactional
-// ставим только в методах, где идет по изменению/удалению  значений из БД
 @Service
 @Transactional
 public class UserServiceImpl  implements UserService{
+
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
 
-    public UserServiceImpl(UserRepository userRepository) {
+
+
+    public UserServiceImpl(UserRepository userRepository,RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
 
     }
     @Override
@@ -58,24 +63,38 @@ public class UserServiceImpl  implements UserService{
 
     @Override
     public void saveUser(User user) {
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role("ROLE_USER"));
+        userRepository.save(user);
+        }
+    @Override
+    public void addUser(User user){
+        Collection<Role> roles= new ArrayList<>();
+        Role roleUser = new Role("ROLE_USER");
+        roleRepository.saveRole(roleUser);
+        roles.add(roleUser);
         user.setRoles(roles);
         userRepository.save(user);
     }
 
 
+
     @Override
     public void updateUser(User user) {
-        Collection<Role> roles = new ArrayList<>();
-        roles.add(new Role("ROLE_USER"));
-        user.setRoles(roles);
         userRepository.save(user);
+    }
+
+    @Override
+    public void saveRole(Role role) {
+        roleRepository.saveRole(role);
     }
 
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Role> getUserRoles() {
+        return roleRepository.getAllRoles();
     }
 
 }
