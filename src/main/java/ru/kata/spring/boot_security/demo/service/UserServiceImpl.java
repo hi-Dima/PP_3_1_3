@@ -5,16 +5,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.RoleRepository;
+import ru.kata.spring.boot_security.demo.dao.UserRepositoryImpl;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
 
-import javax.persistence.EntityManager;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,13 +20,15 @@ public class UserServiceImpl  implements UserService{
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    private final UserRepositoryImpl userRepositoryImpl;
 
 
 
-    public UserServiceImpl(UserRepository userRepository,RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserRepositoryImpl userRepositoryImpl) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
 
+        this.userRepositoryImpl = userRepositoryImpl;
     }
     @Override
     public List<User> getAllUsers() {
@@ -59,27 +57,26 @@ public class UserServiceImpl  implements UserService{
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(r-> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
     }
-
-
-    @Override
-    public void saveUser(User user) {
-        userRepository.save(user);
-        }
     @Override
     public void addUser(User user){
-        Collection<Role> roles= new ArrayList<>();
-        Role roleUser = new Role("ROLE_USER");
-        roleRepository.saveRole(roleUser);
-        roles.add(roleUser);
-        user.setRoles(roles);
-        userRepository.save(user);
+            userRepositoryImpl.addUser(user);
+
     }
 
+    @Override
+    public Set<Role> getRolesByRoleName(String role) {
+        return roleRepository.getRolesByRoleName(role);
+    }
+
+    @Override
+    public Set<Role> getRolesByUserId(Integer Id) {
+        return roleRepository.getRolesByUserId(Id);
+    }
 
 
     @Override
     public void updateUser(User user) {
-        userRepository.save(user);
+        userRepositoryImpl.updateUser(user);
     }
 
     @Override
@@ -93,7 +90,7 @@ public class UserServiceImpl  implements UserService{
     }
 
     @Override
-    public List<Role> getUserRoles() {
+    public Set<Role> getUserRoles() {
         return roleRepository.getAllRoles();
     }
 

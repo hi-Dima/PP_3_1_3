@@ -1,10 +1,8 @@
 package ru.kata.spring.boot_security.demo.entity;
 
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,10 +23,15 @@ public class User {
 
     @Column
     private String username;
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinTable(name = "userT2_roles",joinColumns = @JoinColumn(name = "userT2_id"),
     inverseJoinColumns = @JoinColumn(name = "roles_id"))
-    private Collection<Role> roles;
+    private Set<Role> roles;
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Column
     private String pass;

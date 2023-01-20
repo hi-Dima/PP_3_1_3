@@ -1,10 +1,7 @@
 package ru.kata.spring.boot_security.demo.entity;
 
 import lombok.Data;
-
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Data
@@ -19,9 +16,6 @@ public class Role {
     public String getRole() {
         return role;
     }
-
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
 
     public Role(String role) {
         this.role = role;

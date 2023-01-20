@@ -6,10 +6,10 @@
     <title>All Users</title>
 </head>
 <body>
-<h1>Страница администратора. CRUD доступны по сслыке на каждом пользователе.</h1>
+<h1>Страница администратора. CRUD доступны на каждом пользователе.</h1>
 <div th:each="user : ${users}">
 
-    <a th:href="@{/users/id(id=${user.getId()})}" th:text="${user.getUsername()}">user</a>
+    <a th:text="${user.getUsername()}">user</a>
 
     <a th:href="@{/users/edit(edit=${user.getId()})}"> Edit </a>
     <br/>
