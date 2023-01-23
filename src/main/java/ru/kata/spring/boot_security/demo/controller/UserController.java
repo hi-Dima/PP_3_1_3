@@ -49,13 +49,14 @@ public class UserController {
     @GetMapping("/edit")
     public String getViewForEditUser(Model model, @RequestParam("edit") int id) {
         model.addAttribute("user", userService.userInfo(id));
+        model.addAttribute("roles", userService.getUserRoles());
 
         return "edit";
     }
 
     @PostMapping("/edit")
     public String updateUser(@ModelAttribute("user") User user ) {
-        user.setRoles(userService.getRolesByUserId(user.getId()));
+        user.setRoles(userService.getRolesByRoleName(user.getRoles().toString()));
         userService.updateUser(user);
         return "redirect:/admin";
     }

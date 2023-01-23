@@ -51,10 +51,10 @@ public class UserServiceImpl  implements UserService{
     @Override
     public Collection<? extends GrantedAuthority> getUserAuthorities( String user) {
         User userWithRole =  userRepository.findByUsername(user).get();
-        return mapRolesToAuthorities(userWithRole.getRoles());
+        return CollectRolesToAuthorities(userWithRole.getRoles());
 
     }
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles){
+    private Collection<? extends GrantedAuthority> CollectRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(r-> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
     }
     @Override

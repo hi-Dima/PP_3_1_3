@@ -24,6 +24,15 @@
     <input type="text" th:field="*{pass}" id="pass">
 
     <br><br/>
+    <br>
+    <label for="roles"><b>Role</b></label>
+    <select multiple class="form-control form-control-sm" id="roles" name="roles" size="2" required>
+        <option th:each="role: ${roles}" th:value="${role.getRole}" th:selected="${roles.contains(role)}">
+            <th:block th:text="${role.getRole}">
+            </th:block>
+        </option>
+    </select>
+    <br>
 
     <input type="submit" value="Edit">
 </form>
