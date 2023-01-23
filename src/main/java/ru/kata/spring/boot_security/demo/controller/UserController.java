@@ -45,7 +45,6 @@ public class UserController {
         User user = userService.findUserByUsername(principal.getName());
         return "userInfo";
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/edit")
     public String getViewForEditUser(Model model, @RequestParam("edit") int id) {
         model.addAttribute("user", userService.userInfo(id));
