@@ -26,12 +26,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/users/edit","/users/new").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                //!!!!!
+                .anyRequest().authenticated();
+
+        http
                 .formLogin().successHandler(successUserHandler)
-                .permitAll()
-                .and()
+                .permitAll();
+
+        http
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/users")
                 .permitAll();
     }
