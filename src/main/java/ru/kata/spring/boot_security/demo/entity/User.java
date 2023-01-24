@@ -1,14 +1,18 @@
 package ru.kata.spring.boot_security.demo.entity;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity
 @Data
 @Table(name = "userT2")
-public class User {
+public class User implements org.springframework.security.core.userdetails.UserDetails, GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -39,6 +43,45 @@ public class User {
 
     public User() {
     }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
 
+        return Collections.singletonList(new SimpleGrantedAuthority(this.getRoles().toString()));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.pass;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public String getAuthority() {
+        return null;
+    }
 
 }

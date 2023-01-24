@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public String getAllUsers(Model model) {
+    public String loginPage(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("roles", userService.getUserRoles());
         return "index";
