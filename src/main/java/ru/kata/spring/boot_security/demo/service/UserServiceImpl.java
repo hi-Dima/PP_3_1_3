@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.RoleRepository;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class UserServiceImpl  implements UserService{
-
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
@@ -24,7 +25,8 @@ public class UserServiceImpl  implements UserService{
 
 
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserRepositoryImpl userRepositoryImpl) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, RoleRepository roleRepository, UserRepositoryImpl userRepositoryImpl) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
 
@@ -43,22 +45,19 @@ public class UserServiceImpl  implements UserService{
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).get();
+    public User findUserByUsername(String login) {
+        return userRepository.findByUsername(login).get();
     }
 
 
-    @Override
-    public Collection<? extends GrantedAuthority> getUserAuthorities( String user) {
-        User userWithRole =  userRepository.findByUsername(user).get();
-        return CollectRolesToAuthorities(userWithRole.getRoles());
 
-    }
+
     private Collection<? extends GrantedAuthority> CollectRolesToAuthorities(Collection<Role> roles){
         return roles.stream().map(r-> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
     }
     @Override
     public void addUser(User user){
+        user.setPass(passwordEncoder.encode(user.getPassword()));
             userRepositoryImpl.addUser(user);
 
     }
@@ -76,6 +75,9 @@ public class UserServiceImpl  implements UserService{
 
     @Override
     public void updateUser(User user) {
+        if (!user.getPassword().equals(userRepository.findById(user.getId()).get().getPassword())) {
+            user.setPass(passwordEncoder.encode(user.getPassword()));
+        }
         userRepositoryImpl.updateUser(user);
     }
 

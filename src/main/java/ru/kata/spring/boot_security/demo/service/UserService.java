@@ -10,8 +10,8 @@ public interface UserService {
 //    void saveUser(User user);
     List<User> getAllUsers();
     User userInfo(int id);
-    User findUserByUsername (String username);
-    Collection<? extends GrantedAuthority> getUserAuthorities(String user);
+    User findUserByUsername (String login);
+//    Collection<? extends GrantedAuthority> getUserAuthorities(String user);
     void updateUser(User user);
     void saveRole (Role role);
     void deleteUser(int id);

@@ -32,11 +32,9 @@ public class DbInit {
         userRole.add(roleUser);
 
 
-        User newUser = new User("User","pass","@user");
-        User newAdmin = new User("Admin","pass","@admin");
+        User newUser = new User("Андрей","Иванов",18, "User","pass","ivanov@com",userRole);
+        User newAdmin = new User("Иван","Андреев",54, "Admin","pass","andreev@com",adminRole);
 
-        newUser.setRoles(userRole);
-        newAdmin.setRoles( adminRole);
         userService.addUser(newAdmin);
         userService.addUser(newUser);
 

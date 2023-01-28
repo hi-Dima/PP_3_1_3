@@ -25,8 +25,10 @@ public class FormLoginController {
         return "userInfo";
     }
     @GetMapping("/admin")
-    public String AdminInfo( Model model) {
+    public String AdminInfo( Model model, Principal principal) {
+        model.addAttribute("roles", userService.getUserRoles());
         model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("user",  userService.findUserByUsername(principal.getName()));
         return "admin";
     }
 
