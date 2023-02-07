@@ -4,18 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
 @Component
 public class DbInit {
     private final UserService userService;
+    private final RoleService roleService;
     @Autowired
-    public DbInit(UserService userService) {
+    public DbInit(UserService userService, RoleService roleService) {
         this.userService = userService;
 
+        this.roleService = roleService;
     }
 
     @PostConstruct
@@ -26,8 +28,8 @@ public class DbInit {
         Role roleAdmin = new Role ("ROLE_ADMIN");
         adminRole.add(roleUser);
         adminRole.add(roleAdmin);
-        userService.saveRole(roleAdmin);
-        userService.saveRole(roleUser);
+        roleService.saveRole(roleAdmin);
+        roleService.saveRole(roleUser);
         Set<Role> userRole= new HashSet<>();
         userRole.add(roleUser);
 

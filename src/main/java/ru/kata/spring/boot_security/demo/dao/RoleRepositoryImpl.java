@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.entity.Role;
-
 import javax.persistence.EntityManager;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,18 +26,10 @@ public  class RoleRepositoryImpl implements RoleRepository {
 
         return entityManager.createQuery("select p from Role p", Role.class).getResultStream().collect(Collectors.toSet());
     }
-
-
     @Override
-    public Set<Role> getRolesByRoleName(String Role) {
-        String newRole = new String();
-
-        if (Role.contains("ROLE_USER")) {
-            newRole = "ROLE_USER";
-
-            return entityManager.createQuery("select p from Role p where p.role =: newRole", Role.class)
-                    .setParameter("newRole", newRole).getResultStream().collect(Collectors.toSet());
-        } else  return getAllRoles();
+    public Set<Role> getRolesByRoleName(String newRole) {
+        return entityManager.createQuery("select p from Role p where p.role =: newRole", Role.class)
+                .setParameter("newRole", newRole).getResultStream().collect(Collectors.toSet());
     }
 
     @Override
