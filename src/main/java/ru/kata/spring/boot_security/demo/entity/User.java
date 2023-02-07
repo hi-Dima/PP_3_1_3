@@ -19,7 +19,7 @@ public class User implements UserDetails {
     private String surname;
     @Column
     private String username;
-    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinTable(name = "userT2_roles",joinColumns = @JoinColumn(name = "userT2_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Role> roles = new HashSet<>();
@@ -62,11 +62,6 @@ public class User implements UserDetails {
             userRoles.add(i.getRole());
         }
         return userRoles;
-    }
-
-    public String getToStringRoles() {
-        return roles.toString().replace("[", "")
-                .replace("]", "");
     }
 
     public void setRoles(Set<Role> roles) {
@@ -152,6 +147,19 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+    @Override
+    public String toString() {
+        return
+                "id=" + id +
+                        ", firstName='" + firstName + '\'' +
+                        ", surname='" + surname + '\'' +
+                        ", username='" + username + '\'' +
+                        ", roles=" + roles +
+                        ", pass='" + pass + '\'' +
+                        ", email='" + email + '\'' +
+                        ", age=" + age +
+                        '}';
     }
 
 }

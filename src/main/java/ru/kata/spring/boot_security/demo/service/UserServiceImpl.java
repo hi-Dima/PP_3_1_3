@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,9 +25,7 @@ public class UserServiceImpl  implements UserService{
     }
     @Override
     public List<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users;
-
+        return userRepository.findAll();
     }
 
     @Override
@@ -39,18 +38,11 @@ public class UserServiceImpl  implements UserService{
         return userRepository.findByUsername(login).get();
     }
 
-
-
-
-    private Collection<? extends GrantedAuthority> CollectRolesToAuthorities(Collection<Role> roles){
-        return roles.stream().map(r-> new SimpleGrantedAuthority(r.getRole())).collect(Collectors.toList());
-    }
     @Override
     @Transactional
     public void addUser(User user){
         user.setPass(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
     }
     @Override
     @Transactional
