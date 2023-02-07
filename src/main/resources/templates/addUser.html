@@ -15,7 +15,7 @@
         <p class="navbar-brand text-white">
             <b><span class="align-middle" th:text="${user.username}"></span></b>
             <span class="align-middle">with roles:</span>
-            <span class="align-middle" th:text="${user.getToStringRoles()}"></span>
+            <span class="align-middle" th:text="${user.userRoles}"></span>
         </p>
         <form th:action="@{/logout}" method="post">
             <button type="submit" class="btn btn-dark text-secondary">Logout</button>
